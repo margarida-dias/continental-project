@@ -7,6 +7,8 @@ if __name__ == "__main__":
     from sklearn.ensemble import GradientBoostingRegressor
     from sklearn.metrics import mean_squared_error, r2_score
 
+    np.random.seed(42)  # For reproducibility
+
     n_samples = 10000
 
     # Creating a dataset

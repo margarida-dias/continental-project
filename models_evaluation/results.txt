@@ -52,5 +52,3 @@ Data Quality and Quantity: Ensuring the data is clean and exploring ways to incr
 relevant features.
 It's also crucial to evaluate the models in the context of their application and consider other factors like interpretability,
 inference time, and operational constraints when choosing the best model for deployment.
-
-git remote add origin https://github.com/margarida-dias/model-evaluation.git

@@ -12,7 +12,7 @@ if __name__ == "__main__":
 
     np.random.seed(42)  # For reproducibility
 
-    n_samples = 100000
+    n_samples = 10000
 
     # Generating synthetic data
     data = {
