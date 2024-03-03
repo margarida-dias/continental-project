@@ -1,0 +1,56 @@
+Gradient_Boost_Regressor:
+RMSE: 8.627218510427094
+R-squared: -0.00
+
+Gradient_Boost_Regressor with Grid Search:
+RMSE: 8.785140335185371
+R-squared: -0.0014934211139643327
+
+Random_Forest:
+RMSE: 8.727032961361049
+R-squared (R²): -0.02372488644618942
+
+Random_Forest with Grid Search:
+RMSE: 8.633941232713637
+R-squared (R²): -0.0020011155037451545
+
+XG_Boost:
+RMSE: 8.624003517962567
+R-squared: 0.00030417483133104994
+
+XG_Boots with Grid Search:
+RMSE: 8.62020743872186
+R-squared: 0.0011840653238875953
+
+Linear_Regression:
+Fitting 5 folds for each of 6 candidates, totalling 30 fits
+Best parameters: {'model__alpha': 100}
+Mean Squared Error (MSE): 75.18205572228558
+Root Mean Square Error (RMSE): 8.670758658980516
+R-squared (R²): -0.003702920610257454
+
+
+The R-squared values being close to or below 0 indicate that the models are not explaining
+much of the variance in the target variable, which suggests that either the models are not well-tuned,
+the feature set is not informative enough, or the problem is inherently difficult to predict with the given features.
+However, among the models you've experimented with, the XGBoost model optimized with Grid Search demonstrates the best
+potential for this task.
+
+The slight improvement with Grid Search for the XGBoost model shows the benefit of hyperparameter optimization.
+It's worth noting that even small improvements in RMSE or R-squared can be meaningful in certain contexts, especially
+in complex prediction tasks where perfect prediction is not achievable due to inherent data noise or limitations in
+the available features.
+
+For further improvement, you might consider:
+
+Feature Engineering: Creating new features or transforming existing ones to better capture the underlying patterns in
+the data.
+More Extensive Hyperparameter Tuning: Trying a wider range of values or using more sophisticated methods like Random
+Search or Bayesian Optimization.
+Alternative Models: Exploring other modeling approaches or advanced ensemble methods.
+Data Quality and Quantity: Ensuring the data is clean and exploring ways to increase the dataset size or incorporate additional
+relevant features.
+It's also crucial to evaluate the models in the context of their application and consider other factors like interpretability,
+inference time, and operational constraints when choosing the best model for deployment.
+
+git remote add origin https://github.com/margarida-dias/model-evaluation.git
