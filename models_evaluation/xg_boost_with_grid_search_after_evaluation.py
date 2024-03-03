@@ -44,10 +44,13 @@ if __name__ == "__main__":
 
     # Define the parameter grid to search
     param_grid = {
-        'max_depth': [3, 4, 5],
-        'n_estimators': [50, 100, 200],
-        'learning_rate': [0.01, 0.1, 0.2],
+        'max_depth': [3, 4, 6],
+        'n_estimators': [50, 100, 150],
+        'learning_rate': [0.01, 0.05, 0.1],
+        'subsample': [0.7, 0.8, 1],
+        'colsample_bytree': [0.7, 0.8, 1]
     }
+
     kfold = KFold(shuffle=True, random_state=42)
 
     # Set up the grid search

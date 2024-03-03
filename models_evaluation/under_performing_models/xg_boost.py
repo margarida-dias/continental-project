@@ -1,9 +1,7 @@
-
 if __name__ == "__main__":
 
-    import math
-    from sklearn.ensemble import RandomForestRegressor
-    from sklearn.model_selection import train_test_split, GridSearchCV
+    import xgboost as xgb
+    from sklearn.model_selection import train_test_split
     from sklearn.metrics import mean_squared_error, r2_score
     import pandas as pd
     import numpy as np
@@ -31,50 +29,45 @@ if __name__ == "__main__":
 
     df_encoded = pd.get_dummies(df, columns=['Tire Type', 'Construction', 'Speed Rating', 'Season'])
 
-    # Splitting the dataset into features (X) and target variable (y)
+    # Splitting the dataset into features (X) and target (y)
     X = df_encoded.drop('Performance Metric', axis=1)
     y = df_encoded['Performance Metric']
 
     # Splitting the data into training and testing sets
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-    # Initialize the Random Forest Regressor
-    random_forest_model = RandomForestRegressor(n_estimators=100, random_state=42)
+    # Convert the dataset into DMatrix object, which is optimized for XGBoost
+    dtrain = xgb.DMatrix(X_train, label=y_train)
+    dtest = xgb.DMatrix(X_test, label=y_test)
 
-    # Define the grid of hyperparameters to search
-    param_grid = {
-        'n_estimators': [100, 200, 300],
-        'max_depth': [None, 10, 20, 30],
-        'min_samples_split': [2, 5, 10],
-        'min_samples_leaf': [1, 2, 4]
+    # Define XGBoost model parameters
+    params = {
+        'max_depth': 20,
+        'eta': 0.1,
+        'objective': 'reg:squarederror',
+        'eval_metric': 'rmse'
     }
 
-    # Set up the grid search with 5-fold cross-validation
-    grid_search = GridSearchCV(estimator=random_forest_model, param_grid=param_grid, cv=5,
-                               scoring='neg_mean_squared_error', verbose=2, n_jobs=-1)
+    # Train the model
+    num_boost_round = 200
+    model = xgb.train(params, dtrain, num_boost_round, evals=[(dtest, 'test')], early_stopping_rounds=10)
 
-    # Fit the grid search to the data
-    grid_search.fit(X_train, y_train)
+    bst_model = xgb.XGBRegressor()
 
-    # Print the best parameters
-    print(f"Best parameters: {grid_search.best_params_}")
+    # Predictions
+    predictions = model.predict(dtest)
+    print(f" The performance for the tire are: {predictions}")
 
-    # Use the best model to make predictions
-    best_model = grid_search.best_estimator_
-    predictions = best_model.predict(X_test)
-
-    # Calculate Mean Squared Error, then take the square root to get RMSE
-    mse = mean_squared_error(y_test, predictions)
-    rmse = math.sqrt(mse)
-
-    # Calculate R-squared
+    # Evaluation
+    rmse = np.sqrt(mean_squared_error(y_test, predictions))
     r2 = r2_score(y_test, predictions)
-
     print(f"Root Mean Square Error (RMSE): {rmse}")
-    print(f"R-squared (R²): {r2}")
+    print(f"R-squared: {r2}")
+
+    #model.save_model('/Users/margarida/PycharmProjects/continental_project/model.json')
 
 """
-Best parameters: {'max_depth': 10, 'min_samples_leaf': 1, 'min_samples_split': 10, 'n_estimators': 300}
-RMSE: 8.633941232713637
-R-squared (R²): -0.0020011155037451545
+ The performance for the tire are: [85.520294 83.43076  84.953064 ... 87.67133  83.12294  86.09081 ]
+Root Mean Square Error (RMSE): 8.884746076332682
+R-squared: -0.061060308576113664
 """

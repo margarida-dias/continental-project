@@ -1,13 +1,10 @@
+import numpy as np
+import pandas as pd
+from sklearn.model_selection import train_test_split, GridSearchCV, KFold
+from sklearn.metrics import mean_squared_error, r2_score
 
 if __name__ == "__main__":
-    from deployment.core.config import settings
     import xgboost as xgb
-    from sklearn.model_selection import train_test_split, KFold
-    from sklearn.metrics import mean_squared_error, r2_score
-    from sklearn.model_selection import GridSearchCV
-    import xgboost as xgb
-    import pandas as pd
-    import numpy as np
 
     np.random.seed(42)  # For reproducibility
 
@@ -36,11 +33,12 @@ if __name__ == "__main__":
     X = df_encoded.drop('Performance Metric', axis=1)
     y = df_encoded['Performance Metric']
 
-    # Splitting the data into training and testing sets
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-    # Define the XGBoost model
+    # Initialize the XGBoost regressor with default parameters
     xgb_model = xgb.XGBRegressor(objective='reg:squarederror', eval_metric='rmse')
+
+    kfold = KFold(shuffle=True, random_state=42)
 
     # Define the parameter grid to search
     param_grid = {
@@ -48,7 +46,6 @@ if __name__ == "__main__":
         'n_estimators': [50, 100, 200],
         'learning_rate': [0.01, 0.1, 0.2],
     }
-    kfold = KFold(shuffle=True, random_state=42)
 
     # Set up the grid search
     grid_search = GridSearchCV(estimator=xgb_model,
@@ -67,25 +64,27 @@ if __name__ == "__main__":
     # Use the best model
     best_model = grid_search.best_estimator_
 
-    # Predictions
-    predictions = best_model.predict(X_test)
-    print(f" The performance for the tire are: {predictions}")
+    # Predictions on training and test sets
+    train_preds = best_model.predict(X_train)
+    test_preds = best_model.predict(X_test)
 
-    # Evaluation
-    rmse = np.sqrt(mean_squared_error(y_test, predictions))
-    r2 = r2_score(y_test, predictions)
+    # Calculate metrics
+    train_rmse = mean_squared_error(y_train, train_preds, squared=False)
+    test_rmse = mean_squared_error(y_test, test_preds, squared=False)
+    train_r2 = r2_score(y_train, train_preds)
+    test_r2 = r2_score(y_test, test_preds)
 
-    print(f"Test RMSE: {rmse}")
-    print(f"Test R-squared: {r2}")
-
-    best_model.save_model(settings.MODEL_URI)
-
+    print(f"Training RMSE: {train_rmse}, Test RMSE: {test_rmse}")
+    print(f"Training R²: {train_r2}, Test R²: {test_r2}")
 
 """
-Fitting 3 folds for each of 27 candidates, totalling 81 fits
+Fitting 5 folds for each of 27 candidates, totalling 135 fits
 Best Parameters: {'learning_rate': 0.01, 'max_depth': 3, 'n_estimators': 50}
-Best Score: 8.584268823260654
-The performance for the tire are: [85.07224  84.971596 85.06037  ... 85.290764 85.07224  85.082855]
-RMSE: 8.62020743872186
-R-squared: 0.0011840653238875953
+Best Score: 8.586905607045495
+Training RMSE: 8.55784092601975, Test RMSE: 8.62020743872186
+Training R²: 0.0048389680880758235, Test R²: 0.0011840653238875953
+
+The model might be slightly underfitting, given the low R² scores, suggesting 
+it's not capturing the complexity of the data well enough to explain a larger portion 
+of the variance in the target variable.
 """

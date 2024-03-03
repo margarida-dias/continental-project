@@ -1,10 +1,10 @@
+################################################################################
+
+UNDER-PERFORMING-MODELS
+
 Gradient_Boost_Regressor:
 RMSE: 8.627218510427094
 R-squared: -0.00
-
-Gradient_Boost_Regressor with Grid Search:
-RMSE: 8.785140335185371
-R-squared: -0.0014934211139643327
 
 Random_Forest:
 RMSE: 8.727032961361049
@@ -15,12 +15,8 @@ RMSE: 8.633941232713637
 R-squared (R²): -0.0020011155037451545
 
 XG_Boost:
-RMSE: 8.624003517962567
-R-squared: 0.00030417483133104994
-
-XG_Boots with Grid Search:
-RMSE: 8.62020743872186
-R-squared: 0.0011840653238875953
+Root Mean Square Error (RMSE): 8.884746076332682
+R-squared: -0.061060308576113664
 
 Linear_Regression:
 Fitting 5 folds for each of 6 candidates, totalling 30 fits
@@ -28,6 +24,35 @@ Best parameters: {'model__alpha': 100}
 Mean Squared Error (MSE): 75.18205572228558
 Root Mean Square Error (RMSE): 8.670758658980516
 R-squared (R²): -0.003702920610257454
+
+################################################################################
+
+
+Gradient_Boost_Regressor with Grid Search:
+Root Mean Square Error: 8.621931057705968
+R-squared: 0.0007845969272169961
+
+XG_Boots with Grid Search:
+RMSE: 8.62020743872186
+R-squared: 0.0011840653238875953
+
+################################################################################
+
+OVERFITTING/UNDERFITTING EVALUATION FOR XG BOOST MODEL
+
+Training RMSE: 8.55784092601975, Test RMSE: 8.62020743872186
+Training R²: 0.0048389680880758235, Test R²: 0.0011840653238875953
+
+Given the closeness of the training and testing metrics, your model does not appear to be overfitting.
+Overfitting is typically indicated by a high training performance coupled with a significantly worse testing performance.
+
+The model might be slightly underfitting, given the low R² scores, suggesting
+it's not capturing the complexity of the data well enough to explain a larger portion
+of the variance in the target variable.
+
+
+################################################################################
+OVERALL RESULTS:
 
 
 The R-squared values being close to or below 0 indicate that the models are not explaining
