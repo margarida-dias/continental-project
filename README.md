@@ -18,3 +18,4 @@ kubectl create namespace seldon-xgboost-namespace
 kubectl apply -f seldon-xgboost-deployment.yaml
 kubectl get pods -n seldon-xgboost-namespace
 ```
+
