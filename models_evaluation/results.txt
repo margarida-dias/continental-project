@@ -43,7 +43,7 @@ OVERFITTING/UNDERFITTING EVALUATION FOR XG BOOST MODEL
 Training RMSE: 8.55784092601975, Test RMSE: 8.62020743872186
 Training R²: 0.0048389680880758235, Test R²: 0.0011840653238875953
 
-Given the closeness of the training and testing metrics, your model does not appear to be overfitting.
+Given the closeness of the training and testing metrics, the model does not appear to be overfitting.
 Overfitting is typically indicated by a high training performance coupled with a significantly worse testing performance.
 
 The model might be slightly underfitting, given the low R² scores, suggesting

@@ -1,0 +1,15 @@
+apiVersion: machinelearning.seldon.io/v1alpha2
+kind: SeldonDeployment
+metadata:
+  name: xgboost
+spec:
+  name: xgboost-model
+  protocol: v2
+  predictors:
+  - graph:
+      children: []
+      implementation: XGBOOST_SERVER
+      modelUri: gs://margarida-models/models.json
+      name: regression
+    name: default
+    replicas: 1
